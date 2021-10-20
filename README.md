@@ -1,1 +1,1 @@
-# mgp-auth-go
+# sud-mgp-auth-go

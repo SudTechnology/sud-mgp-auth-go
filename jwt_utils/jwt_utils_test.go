@@ -4,33 +4,40 @@ import (
 	"testing"
 )
 
-var (
-	appId     = "appId123"
-	appSecret = "243223ffslsfsldfl412fdsfsdf"
+const (
+	appID     = "1461564080052506636"
+	appSecret = "xJL0HU9ailVSGInqPyNK3Ev3qNHReRbR"
+)
 
-	uid = "1234"
+const (
+	uid = "123"
 )
 
 func TestGetToken(t *testing.T) {
 	// 实例化UserClaims，传入参数
 	userClaims := &UserClaims{
-		AppID: appId,
+		AppID: appID,
 		Uid:   uid,
 	}
 
 	// 生成token和有效期（有效期默认2小时）
-	token, exp, err := GetToken(userClaims, appSecret)
+	token, exp, err := GetToken(userClaims, appSecret, 0)
 	if err != nil {
 		t.Logf("err:%+v \n", err)
 	}
-	t.Logf("token:%+v,exp:%+v \n", token, exp)
+	t.Logf("token:%+v \n", token)
+	t.Logf("exp:%+v \n", exp)
 }
 
 func TestParseToken(t *testing.T) {
 	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMjM0IiwiYXBwX2lkIjoiYXBwSWQxMjMiLCJleHAiOjE2MzE4NTcyMzl9.RKC7q5UNuUld17vncEDAvJvwuVZ9B23sclitXp2C7qM"
-	userClaims, err := ParseToken(token, appSecret)
+	userClaims, err, sdkErrorCode := ParseToken(token, appSecret)
 	if err != nil {
 		t.Logf("err:%+v \n", err)
+	}
+
+	if sdkErrorCode != 0 {
+		t.Logf("sdkErrorCode:%+v \n", sdkErrorCode)
 	}
 	t.Logf("userClaims:%+v \n", userClaims)
 }

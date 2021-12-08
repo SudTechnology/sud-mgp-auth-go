@@ -26,7 +26,7 @@ func (client *SudMGPAuth) GetCode(uid string) *SudCode {
 		Uid:   uid,
 	}
 
-	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret)
+	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret, 0)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
 	}
@@ -46,7 +46,7 @@ func (client *SudMGPAuth) GetSSToken(uid string) *SudSSToken {
 		Uid:   uid,
 	}
 
-	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret)
+	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret, 0)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
 	}
@@ -63,9 +63,15 @@ func (client *SudMGPAuth) GetUidByCode(code string) *SudUid {
 	resp := &SudUid{
 		IsSuccess: false,
 	}
-	userClaims, err := jwt_utils.ParseToken(code, client.AppSecret)
+	userClaims, err, errorCode := jwt_utils.ParseToken(code, client.AppSecret)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
+		resp.SdkErrorCode = errorCode
+		return resp
+	}
+	if errorCode != 0 {
+		log.Printf("errorCode:%+v \n", errorCode)
+		resp.SdkErrorCode = errorCode
 		return resp
 	}
 
@@ -81,9 +87,15 @@ func (client *SudMGPAuth) GetUidBySSToken(ssToken string) *SudUid {
 	resp := &SudUid{
 		IsSuccess: false,
 	}
-	userClaims, err := jwt_utils.ParseToken(ssToken, client.AppSecret)
+	userClaims, err, sdkErrorCode := jwt_utils.ParseToken(ssToken, client.AppSecret)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
+		resp.SdkErrorCode = sdkErrorCode
+		return resp
+	}
+	if sdkErrorCode != 0 {
+		log.Printf("errorCode:%+v \n", sdkErrorCode)
+		resp.SdkErrorCode = sdkErrorCode
 		return resp
 	}
 
@@ -95,20 +107,20 @@ func (client *SudMGPAuth) GetUidBySSToken(ssToken string) *SudUid {
 	return resp
 }
 
-func (client *SudMGPAuth) VerifyCode(code string) bool {
-	_, err := jwt_utils.ParseToken(code, client.AppSecret)
+func (client *SudMGPAuth) VerifyCode(code string) int32 {
+	_, err, sdkErrorCode := jwt_utils.ParseToken(code, client.AppSecret)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
-		return false
+		return sdkErrorCode
 	}
-	return true
+	return sdkErrorCode
 }
 
-func (client *SudMGPAuth) VerifySSToken(token string) bool {
-	_, err := jwt_utils.ParseToken(token, client.AppSecret)
+func (client *SudMGPAuth) VerifySSToken(token string) int32 {
+	_, err, errCode := jwt_utils.ParseToken(token, client.AppSecret)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
-		return false
+		return errCode
 	}
-	return true
+	return errCode
 }

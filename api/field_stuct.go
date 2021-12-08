@@ -11,6 +11,7 @@ type SudSSToken struct {
 }
 
 type SudUid struct {
-	Uid       string `json:"uid"`
-	IsSuccess bool   `json:"is_success"`
+	Uid          string `json:"uid"`
+	IsSuccess    bool   `json:"is_success"`
+	SdkErrorCode int32  `json:"sdk_error_code"`
 }

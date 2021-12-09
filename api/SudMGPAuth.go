@@ -19,14 +19,14 @@ func NewSudMGPAuth(appID string, appSecret string) *SudMGPAuth {
 	return client
 }
 
-func (client *SudMGPAuth) GetCode(uid string) *SudCode {
+func (client *SudMGPAuth) GetCode(uid string, expireDuration int64) *SudCode {
 	// 实例化UserClaims，传入参数
 	userClaims := &jwt_utils.UserClaims{
 		AppID: client.AppID,
 		Uid:   uid,
 	}
 
-	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret, 0)
+	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret, expireDuration)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
 	}
@@ -39,14 +39,14 @@ func (client *SudMGPAuth) GetCode(uid string) *SudCode {
 	return resp
 }
 
-func (client *SudMGPAuth) GetSSToken(uid string) *SudSSToken {
+func (client *SudMGPAuth) GetSSToken(uid string, expireDuration int64) *SudSSToken {
 	// 实例化UserClaims，传入参数
 	userClaims := &jwt_utils.UserClaims{
 		AppID: client.AppID,
 		Uid:   uid,
 	}
 
-	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret, 0)
+	token, exp, err := jwt_utils.GetToken(userClaims, client.AppSecret, expireDuration)
 	if err != nil {
 		log.Printf("err:%+v \n", err)
 	}

@@ -52,10 +52,10 @@ var (
 )
 
 // GetToken 生成token
-func GetToken(claims *UserClaims, secret string, expireDuration int32) (string, int64, error) {
+func GetToken(claims *UserClaims, secret string, expireDuration int64) (string, int64, error) {
 	exp := time.Now().Add(effectTime).Unix()
 
-	if expireDuration > int32(effectTime.Milliseconds()) {
+	if expireDuration > effectTime.Milliseconds() {
 		addExp := time.Duration(expireDuration) * time.Millisecond
 		exp = time.Now().Add(addExp).Unix()
 	}

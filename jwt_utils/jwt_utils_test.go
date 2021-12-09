@@ -30,7 +30,7 @@ func TestGetToken(t *testing.T) {
 }
 
 func TestParseToken(t *testing.T) {
-	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMjM0IiwiYXBwX2lkIjoiYXBwSWQxMjMiLCJleHAiOjE2MzE4NTcyMzl9.RKC7q5UNuUld17vncEDAvJvwuVZ9B23sclitXp2C7qM"
+	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMjMiLCJhcHBfaWQiOiIxNDYxNTY0MDgwMDUyNTA2NjM2IiwiZXhwIjoxNjM4OTc4NDQ1fQ.BEhJHNbGsd9hs_oK6IPg0D1A46cKH3mTf3UMTSjlcTk"
 	userClaims, err, sdkErrorCode := ParseToken(token, appSecret)
 	if err != nil {
 		t.Logf("err:%+v \n", err)

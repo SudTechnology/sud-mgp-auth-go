@@ -46,19 +46,10 @@ type UserClaims struct {
 	jwt.StandardClaims
 }
 
-var (
-	//token有效时间（纳秒）
-	effectTime = 2 * time.Hour
-)
-
 // GetToken 生成token
 func GetToken(claims *UserClaims, secret string, expireDuration int64) (string, int64, error) {
-	exp := time.Now().Add(effectTime).Unix()
-
-	if expireDuration > effectTime.Milliseconds() {
-		addExp := time.Duration(expireDuration) * time.Millisecond
-		exp = time.Now().Add(addExp).Unix()
-	}
+	addExp := time.Duration(expireDuration) * time.Millisecond
+	exp := time.Now().Add(addExp).Unix()
 
 	claims.ExpiresAt = exp
 	//生成token

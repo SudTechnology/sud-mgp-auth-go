@@ -20,7 +20,7 @@ func TestGetToken(t *testing.T) {
 		Uid:   uid,
 	}
 
-	// 生成token和有效期（有效期默认2小时）
+	// 生成token和有效期
 	token, exp, err := GetToken(userClaims, appSecret, 0)
 	if err != nil {
 		t.Logf("err:%+v \n", err)

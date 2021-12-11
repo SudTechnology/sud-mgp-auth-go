@@ -42,11 +42,3 @@ func TestParseToken(t *testing.T) {
 	t.Logf("userClaims:%+v \n", userClaims)
 }
 
-func TestUpdateToken(t *testing.T) {
-	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIxMjM0IiwiYXBwX2lkIjoiYXBwSWQxMjMiLCJleHAiOjE2MzE4NTUxMjN9.FeLqEK7Nz-5gq6l8FTkdXcGdPJgLgdY98tfc4r7tVB0"
-	newToken, exp, err := UpdateToken(token, appSecret)
-	if err != nil {
-		t.Logf("err:%+v \n", err)
-	}
-	t.Logf("newToken:%+v,exp:%+v \n", newToken, exp)
-}

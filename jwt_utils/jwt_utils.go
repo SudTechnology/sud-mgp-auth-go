@@ -93,28 +93,3 @@ func ParseToken(tokenString string, secret string) (*UserClaims, error, int32) {
 	return claims, nil, tokenSuccess
 }
 
-// UpdateToken 更新token
-func UpdateToken(tokenString string, secret string) (string, int64, error) {
-	jwt.TimeFunc = func() time.Time {
-		return time.Unix(0, 0)
-	}
-	token, err := jwt.ParseWithClaims(tokenString, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %+v", token.Header["alg"])
-		}
-		return []byte(secret), nil
-	})
-	if err != nil {
-		return "", 0, err
-	}
-	claims, ok := token.Claims.(*UserClaims)
-	if !ok || !token.Valid {
-		return "", 0, fmt.Errorf("token is valid. token:%+v, valid:%+v", tokenString, token.Valid)
-	}
-
-	newToken, exp, err := GetToken(claims, secret, 0)
-	if err != nil {
-		return "", 0, err
-	}
-	return newToken, exp, nil
-}
